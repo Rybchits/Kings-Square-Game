@@ -1,8 +1,9 @@
 package game.app.domain.gamefield;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
-public class GameField{
+public class GameField implements Iterable<Cell>{
 
     public GameField(int height, int width) {
         if (width <= 0 || height <= 0) {
@@ -66,6 +67,49 @@ public class GameField{
                     cell.setNeighbor(Direction.west(), cell(row, col - 1));
                 }
             }
+        }
+    }
+
+    @Override
+    public Iterator<Cell> iterator() {
+        return new GameFieldIterator(this);
+    }
+
+    // Итератор по ячейкам
+    private class GameFieldIterator implements Iterator<Cell> {
+
+        private Cell _cell = null;
+        private final GameField _field;
+
+        public GameFieldIterator(GameField field) {
+            _field = field;
+        }
+
+        @Override
+        public boolean hasNext() {
+
+            return nextCell( _cell ) != null;
+        }
+
+        @Override
+        public Cell next() {
+            _cell = nextCell(_cell);
+            return _cell;
+        }
+
+        private Cell nextCell(Cell cell) {
+            Cell next_cell;
+
+            if(cell == null) {
+                next_cell = _field.cell(0, 0);
+            } else {
+                next_cell = cell.neighbor( Direction.east() );
+                if( next_cell == null && cell.position().row() < _field.height()-1 ) {
+                    next_cell = _field.cell( cell.position().row() + 1 , 0 );
+                }
+            }
+
+            return next_cell;
         }
     }
 }
