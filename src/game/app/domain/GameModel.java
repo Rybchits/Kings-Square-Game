@@ -1,5 +1,8 @@
 package game.app.domain;
 
+import game.app.domain.exceptions.InvalidSelectedCellException;
+import game.app.domain.exceptions.SelectedCellNotInSequenceException;
+import game.app.domain.exceptions.WordIsNotInDictionaryException;
 import game.app.domain.gamefield.Cell;
 import game.app.domain.gamefield.GameField;
 import game.app.domain.listeners.GameModelEvent;
@@ -100,7 +103,10 @@ public class GameModel {
 
         @Override
         public void cellIsSelected(Player player) {
-            // Проверка ячейки на наличие метки. Перерисовать поле
+            if (player.getSelectedCell().label() != null)
+                throw new InvalidSelectedCellException();
+
+            // Перерисовать поле
         }
 
         @Override
@@ -113,13 +119,13 @@ public class GameModel {
             // Проверка наличия выбранной ячейки в последовательности
             if (!player.currentSequence().contains(player.getSelectedCell())){
                 player.setCurrentSequence(null);
-                // Todo бросить исключение. Нет ячейки в последовательности
+                throw new SelectedCellNotInSequenceException();
             }
 
             // Проверка наличия слова последовательности в словаре
             if (!_dictionary.contains(player.currentSequence().getWordFromCells())) {
                 player.setCurrentSequence(null);
-                // Todo бросить исключение. Нет слова в словаре
+                throw new WordIsNotInDictionaryException();
             }
 
             // Удаление слова последовательности из словаря

@@ -1,5 +1,6 @@
 package game.app.domain;
 
+import game.app.domain.exceptions.UnableAddWordToDictionaryException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,11 +19,10 @@ public class Dictionary {
     public String getName() { return _nameDictionary; }
 
     public void addNewWord(@NotNull String newWord) {
-
-        if (!_availableWords.contains(newWord) && !_removedWords.contains(newWord)) {
-            _availableWords.add(newWord);
+        if (_availableWords.contains(newWord) || _removedWords.contains(newWord)) {
+            throw new UnableAddWordToDictionaryException();
         }
-        // Todo добавить исключение
+        _availableWords.add(newWord);
     }
 
     public void removeWord(@NotNull String removableWord) {

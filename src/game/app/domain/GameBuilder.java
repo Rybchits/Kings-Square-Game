@@ -1,5 +1,7 @@
 package game.app.domain;
 
+import game.app.domain.exceptions.InvalidFieldSideException;
+import game.app.domain.exceptions.InvalidNameDictionaryException;
 import game.app.domain.gamefield.GameField;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +26,7 @@ public class GameBuilder {
 
     public void setFieldSide(int side) {
         if (!availableFieldSize.contains(side)){
-            // Todo породить исключение. Недопустимый размер поля
+            throw new InvalidFieldSideException();
         }
         _fieldSide = side;
     }
@@ -51,7 +53,7 @@ public class GameBuilder {
 
     public void setDictionaryByName(String name) {
         if (!_availableDictionaries.containsKey(name)) {
-            // Todo породить исключение. Нет словаря с таким именем
+            throw new InvalidNameDictionaryException();
         }
         nameSelectedDictionary = name;
     }
