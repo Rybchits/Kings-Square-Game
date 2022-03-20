@@ -9,9 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Player {
+    public Player(String name) { _name = name; }
+
     private final String _name;
 
-    public Player(String name) { _name = name; }
+    public String name() { return _name; }
 
     // Выбранная ячейка
     private Cell _selectedCell;
@@ -25,10 +27,12 @@ public class Player {
 
 
     // Выбранная буква
-    private Character _selectedLabel;
+    private Character _selectedSymbol;
 
-    public void setSelectedLabel(Character label) {
-        _selectedLabel = label;
+    public Character getSelectedSymbol() { return _selectedSymbol; }
+
+    public void setSelectedSymbol(Character label) {
+        _selectedSymbol = label;
         fireLabelIsSelected();
     }
 
@@ -39,6 +43,10 @@ public class Player {
         _currentSequence.addCell(cell);
         fireAddedCellInSequence();
     }
+
+    public LabeledCellSequence currentSequence() { return _currentSequence; }
+
+    public void setCurrentSequence(LabeledCellSequence value) { _currentSequence = value; }
 
     public void defineSequenceCells() { fireSequenceCellIsDefined(); }
 
@@ -59,10 +67,12 @@ public class Player {
     // Пропуск хода
     private boolean _prevTurnWasSkipped = false;
 
+    public boolean prevTurnWasSkipped() { return _prevTurnWasSkipped; }
+
     public void setPrevTurnWasSkipped(boolean value) { _prevTurnWasSkipped = value; }
 
     public void skipCurrentTurn() {
-        _selectedLabel = null;
+        _selectedSymbol = null;
         _selectedCell = null;
         _currentSequence = new LabeledCellSequence();
         _prevTurnWasSkipped = true;
