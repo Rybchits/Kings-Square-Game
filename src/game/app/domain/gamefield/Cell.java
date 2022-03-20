@@ -15,7 +15,7 @@ public class Cell {
     // Метка
     private Character _label;
 
-    public boolean hasLabel(){ return _label != null; }
+    public Character label(){ return _label; }
 
     void setLabel(Character newLabel) {
         _label = newLabel;
