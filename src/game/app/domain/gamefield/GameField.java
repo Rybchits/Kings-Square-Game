@@ -1,5 +1,7 @@
 package game.app.domain.gamefield;
 
+import game.app.domain.exceptions.InvalidFirstWordOnFieldException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -39,6 +41,8 @@ public class GameField implements Iterable<Cell>{
         return cell(new CellPosition(row, col));
     }
 
+    public void setSymbolTo(CellPosition pos, Character symbol) { cell(pos).setLabel(symbol);}
+
     private void generateCellMatrix() {
         // Заполняем поле ячейками
         for (int row = 0; row < height(); row++) {
@@ -67,6 +71,17 @@ public class GameField implements Iterable<Cell>{
                     cell.setNeighbor(Direction.west(), cell(row, col - 1));
                 }
             }
+        }
+    }
+
+    public void setWordInCenterRow(String word) {
+        if (word == null || word.length() != _width)
+            throw new InvalidFirstWordOnFieldException();
+
+        int indexCenterRow = _height / 2;
+
+        for (int col = 0; col < width(); col++) {
+            cell(indexCenterRow, col).setLabel(word.charAt(col));
         }
     }
 

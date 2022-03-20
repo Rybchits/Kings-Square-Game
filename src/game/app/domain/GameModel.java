@@ -50,7 +50,14 @@ public class GameModel {
 
     // Запуск игры
     public void start() {
+        // Определяем первого игрока
         _activePlayer = getIndexRandomPlayer();
+
+        // Устанавливаем первое слово в поле по центру
+        String startWord = _dictionary.getRandomWordByLength(_field.width());
+        _field.setWordInCenterRow(startWord);
+        _dictionary.removeWord(startWord);
+
         firePlayerExchanged();
     }
 
@@ -99,6 +106,7 @@ public class GameModel {
         @Override
         public void labelIsSelected(Player player) {
             // Проверка метки в алфавите. Перерисовать поле
+            _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
         }
 
         @Override
