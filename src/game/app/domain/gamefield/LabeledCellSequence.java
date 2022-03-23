@@ -1,5 +1,6 @@
 package game.app.domain.gamefield;
 
+import game.app.domain.exceptions.UnableAddCellInSequenceException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -8,14 +9,16 @@ public class LabeledCellSequence {
     private final ArrayList<Cell> _cells = new ArrayList<>();
 
 
-    public boolean addCell(@NotNull Cell cell) {
-        if (cell.label() == null)
-            return false;
-
+    public void addCell(@NotNull Cell cell) {
+        if (!canAddCell(cell)) {
+            throw new UnableAddCellInSequenceException();
+        }
         _cells.add(cell);
-        return true;
     }
 
+    public boolean canAddCell(Cell cell) {
+        return cell.label() != null && (getLastCell() == null || (getLastCell() != null && getLastCell().isNeighbor(cell)));
+    }
 
     public String getWordFromCells() {
         StringBuilder result = new StringBuilder();
@@ -27,6 +30,9 @@ public class LabeledCellSequence {
 
     public void clear() { _cells.clear(); }
 
-
     public boolean contains(Cell cell) { return _cells.contains(cell); }
+
+    public int size() { return _cells.size(); }
+
+    public Cell getLastCell() { return _cells.size() != 0? _cells.get(_cells.size() - 1) : null; }
 }

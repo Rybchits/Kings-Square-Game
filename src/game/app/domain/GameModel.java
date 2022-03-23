@@ -4,6 +4,7 @@ import game.app.domain.exceptions.InvalidSelectedCellException;
 import game.app.domain.exceptions.SelectedCellNotInSequenceException;
 import game.app.domain.exceptions.WordIsNotInDictionaryException;
 import game.app.domain.gamefield.Cell;
+import game.app.domain.gamefield.Direction;
 import game.app.domain.gamefield.GameField;
 import game.app.domain.listeners.GameModelEvent;
 import game.app.domain.listeners.GameModelListener;
@@ -30,7 +31,7 @@ public class GameModel {
 
     // Игроки данной сессии
     private int _activePlayer;
-    private ArrayList<Player> _playerList = new ArrayList<>();
+    private final ArrayList<Player> _playerList = new ArrayList<>();
 
 
     // Игровое поле
@@ -111,8 +112,21 @@ public class GameModel {
 
         @Override
         public void cellIsSelected(Player player) {
-            if (player.getSelectedCell().label() != null)
-                throw new InvalidSelectedCellException();
+            if (player.getSelectedCell() != null) {
+                // Если у ячейки уже есть метка или она не имеет соседей с меткой
+                boolean hasLabelCell = player.getSelectedCell().label() != null;
+                boolean neighborHasLabel = false;
+
+                var direction = Direction.north();
+                for (int i = 0; i < 4; i++) {
+                    Cell neighbor = player.getSelectedCell().neighbor(direction);
+                    neighborHasLabel |= neighbor != null && neighbor.label() != null;
+                    direction = direction.clockwise();
+                }
+
+                if (hasLabelCell || !neighborHasLabel)
+                    throw new InvalidSelectedCellException();
+            }
 
             // Перерисовать поле
         }

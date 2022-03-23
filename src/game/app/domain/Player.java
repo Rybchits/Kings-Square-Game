@@ -1,5 +1,6 @@
 package game.app.domain;
 
+import game.app.domain.exceptions.UnableAddCellInSequenceException;
 import game.app.domain.gamefield.Cell;
 import game.app.domain.gamefield.LabeledCellSequence;
 import game.app.domain.listeners.PlayerActionListener;
@@ -40,8 +41,13 @@ public class Player {
     private LabeledCellSequence _currentSequence = new LabeledCellSequence();
 
     public void addedCellInSequence(Cell cell){
-        _currentSequence.addCell(cell);
-        fireAddedCellInSequence();
+        // Если можно добавить - добавляем и уведомляем, иначе исключение
+        if (_currentSequence.canAddCell(cell)){
+            _currentSequence.addCell(cell);
+            fireAddedCellInSequence();
+        } else {
+            throw new UnableAddCellInSequenceException();
+        }
     }
 
     public LabeledCellSequence currentSequence() { return _currentSequence; }
