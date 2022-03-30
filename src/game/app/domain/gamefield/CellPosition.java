@@ -30,4 +30,23 @@ public class CellPosition {
 
         return  (row_delta == 0 && col_delta == 1) || (row_delta == 1 && col_delta == 0);
     }
+
+    @Override
+    public boolean equals(Object other){
+
+        if(other instanceof CellPosition) {
+            // Типы совместимы, можно провести преобразование
+            CellPosition otherPosition = (CellPosition)other;
+            // Возвращаем результат сравнения углов
+            return row() == otherPosition.row() && column() == otherPosition.column();
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        // Одинаковые объекты должны возвращать одинаковые значения
+        return row() * 1000 + column();
+    }
 }

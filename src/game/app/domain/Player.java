@@ -7,6 +7,7 @@ import game.app.domain.listeners.PlayerActionListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Player {
@@ -60,8 +61,8 @@ public class Player {
     // Все составленные игроком слова
     private final ArrayList<LabeledCellSequence> _words = new ArrayList<>();
 
-    public ArrayList<String> getWordsOfPlayer() {
-        return (ArrayList<String>) _words.stream().map(LabeledCellSequence::getWordFromCells).toList();
+    public List<String> getWordsOfPlayer() {
+        return _words.stream().map(LabeledCellSequence::getWordFromCells).toList();
     }
 
     public void addCurrentSequenceInWordsPlayer() {

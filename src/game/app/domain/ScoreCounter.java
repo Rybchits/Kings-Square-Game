@@ -1,5 +1,7 @@
 package game.app.domain;
 
+import game.app.domain.exceptions.PlayerNotExistingException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +15,10 @@ public class ScoreCounter {
 
     // Добавить очки игроку
     public void addScoresToPlayer(String playerName, int score) {
-        _scoresOfPlayer.put(playerName, _scoresOfPlayer.get(playerName) + score);
+        if (_scoresOfPlayer.containsKey(playerName))
+            _scoresOfPlayer.put(playerName, _scoresOfPlayer.get(playerName) + score);
+        else
+            throw new PlayerNotExistingException();
     }
 
     // Получить счет игрока

@@ -98,16 +98,20 @@ public class GameModel {
         @Override
         public void turnIsSkipped(Player player) {
             // Проверить окончание игры
-            if (determineEndOfGame()) fireGameFinished();
-
-            // Переход хода
-            exchangePlayer();
+            if (determineEndOfGame())
+                fireGameFinished();
+            else
+                // Переход хода
+                exchangePlayer();
         }
 
         @Override
         public void labelIsSelected(Player player) {
-            // Проверка метки в алфавите. Перерисовать поле
-            _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
+            // Проверка метки в алфавите. Проверка, что символ есть куда ставить
+            if (player.getSelectedCell() != null)
+                _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
+
+            // Перерисовать поле
         }
 
         @Override
@@ -124,8 +128,10 @@ public class GameModel {
                     direction = direction.clockwise();
                 }
 
-                if (hasLabelCell || !neighborHasLabel)
+                if (hasLabelCell || !neighborHasLabel){
+                    player.setSelectedCell(null);
                     throw new InvalidSelectedCellException();
+                }
             }
 
             // Перерисовать поле
@@ -153,17 +159,21 @@ public class GameModel {
             // Удаление слова последовательности из словаря
             _dictionary.removeWord(player.currentSequence().getWordFromCells());
 
-            // Добавление указанного слова игроку
-            player.addCurrentSequenceInWordsPlayer();
-
             // Добавление очков игроку
             _scoreCounter.addScoresToPlayer(player.name(), player.currentSequence().getWordFromCells().length());
 
-            // Проверить окончание игры
-            if (determineEndOfGame()) fireGameFinished();
+            // Добавление указанного слова игроку
+            player.addCurrentSequenceInWordsPlayer();
 
-            // Переход хода
-            exchangePlayer();
+            // Считать, что игрок совершил ход
+            player.setPrevTurnWasSkipped(false);
+
+            // Проверить окончание игры
+            if (determineEndOfGame())
+                fireGameFinished();
+            else
+                // Иначе переход хода
+                exchangePlayer();
         }
     }
 

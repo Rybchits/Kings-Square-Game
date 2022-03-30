@@ -1,5 +1,6 @@
 package game.app.domain.gamefield;
 
+import game.app.domain.exceptions.InvalidFieldSideException;
 import game.app.domain.exceptions.InvalidFirstWordOnFieldException;
 
 import java.util.HashMap;
@@ -9,7 +10,7 @@ public class GameField implements Iterable<Cell>{
 
     public GameField(int height, int width) {
         if (width <= 0 || height <= 0) {
-            throw new IllegalArgumentException();
+            throw new InvalidFieldSideException();
         }
 
         _width = width;

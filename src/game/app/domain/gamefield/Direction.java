@@ -58,6 +58,13 @@ public class Direction {
         return _hours == direct._hours;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 53 * hash + this._hours;
+        return hash;
+    }
+
     public boolean isOpposite(Direction other) {
         return this.opposite().equals(other);
     }

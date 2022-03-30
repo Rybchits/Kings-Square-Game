@@ -4,7 +4,10 @@ import game.app.domain.exceptions.UnableAddWordToDictionaryException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Dictionary {
     private final String _nameDictionary;
@@ -13,12 +16,13 @@ public class Dictionary {
 
     public Dictionary(@NotNull String name, @NotNull Set<String> availableWords) {
         _nameDictionary = name;
-        _availableWords = availableWords;
+        _availableWords = availableWords.stream().map(word -> word.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
     }
 
     public String getName() { return _nameDictionary; }
 
     public void addNewWord(@NotNull String newWord) {
+        newWord = newWord.toLowerCase(Locale.ROOT);
         if (_availableWords.contains(newWord) || _removedWords.contains(newWord)) {
             throw new UnableAddWordToDictionaryException();
         }
@@ -31,15 +35,14 @@ public class Dictionary {
     }
 
     public boolean contains(String word) {
+        word = word.toLowerCase(Locale.ROOT);
         return _availableWords.contains(word);
     }
 
     public String getRandomWordByLength(int length) {
-        ArrayList<String> filterSet =
-                (ArrayList<String>)_availableWords.stream().filter(word -> word.length() == length).toList();
-
+        List<String> filterSet = _availableWords.stream().filter(word -> word.length() == length).toList();
         return filterSet.size() != 0? filterSet.get((int)(Math.random() * filterSet.size())) : null;
     }
 
-    public ArrayList<String> getAllWords() { return (ArrayList<String>)_availableWords.stream().toList(); }
+    public ArrayList<String> getAllWords() { return new ArrayList<>(_availableWords); }
 }
