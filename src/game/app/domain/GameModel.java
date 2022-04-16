@@ -32,6 +32,7 @@ public class GameModel {
     // Игроки данной сессии
     private int _activePlayer;
     private final ArrayList<Player> _playerList = new ArrayList<>();
+    public ArrayList<Player> players() { return _playerList; }
 
 
     // Игровое поле
@@ -100,9 +101,11 @@ public class GameModel {
             // Проверить окончание игры
             if (determineEndOfGame())
                 fireGameFinished();
-            else
+            else {
                 // Переход хода
                 exchangePlayer();
+                fireTurnIsSkipped(player);
+            }
         }
 
         @Override
@@ -111,7 +114,7 @@ public class GameModel {
             if (player.getSelectedCell() != null)
                 _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
 
-            // Перерисовать поле
+            fireLabelIsSelected(player);
         }
 
         @Override
@@ -134,12 +137,12 @@ public class GameModel {
                 }
             }
 
-            // Перерисовать поле
+            fireCellIsSelected(player);
         }
 
         @Override
         public void addedCellInSequence(Player player) {
-            // Перерисовать поле
+            fireAddedCellInSequence(player);
         }
 
         @Override
@@ -171,41 +174,68 @@ public class GameModel {
             // Проверить окончание игры
             if (determineEndOfGame())
                 fireGameFinished();
-            else
-                // Иначе переход хода
+
+            // Иначе переход хода
+            else {
                 exchangePlayer();
+                fireSequenceCellIsDefined(player);
+            }
         }
     }
 
 
     // Уведомления слушателей событий игры
-    private final ArrayList<GameModelListener> _gameListeners = new ArrayList<>();
+    private final ArrayList<GameModelListener> _gameListenersList = new ArrayList<>();
 
     public void addGameListener(GameModelListener l) {
-        _gameListeners.add(l);
+        _gameListenersList.add(l);
     }
 
     public void removeGameListener(GameModelListener l) {
-        _gameListeners.remove(l);
+        _gameListenersList.remove(l);
     }
 
     protected void fireGameFinished() {
         var event = new GameModelEvent(this);
         event.setPlayer(activePlayer());
         event.setScore(_scoreCounter);
-        for (GameModelListener listener : _gameListeners) { listener.gameFinished(event); }
-
-        System.out.println("Игра закончилась!" + System.lineSeparator());
+        for (GameModelListener listener : _gameListenersList) { listener.gameFinished(event); }
     }
 
     protected void firePlayerExchanged() {
         var event = new GameModelEvent(this);
         event.setPlayer(activePlayer());
         event.setScore(_scoreCounter);
-        for (GameModelListener listener : _gameListeners) { listener.playerExchanged(event); }
-
-        System.out.println("Ход был передан другому игроку" + System.lineSeparator());
+        for (GameModelListener listener : _gameListenersList) { listener.playerExchanged(event); }
     }
 
-    // Todo создание списка слушателей игрока
+
+    // Уведомление слушателей действий игроков
+    private final ArrayList<PlayerActionListener> _playerListenerList = new ArrayList<>();
+
+    public void addPlayerActionListener(PlayerActionListener l) { _playerListenerList.add(l); }
+
+    public void removePlayerActionListener(PlayerActionListener l) {
+        _playerListenerList.remove(l);
+    }
+
+    private void fireTurnIsSkipped(Player player) {
+        _playerListenerList.forEach( listener -> listener.turnIsSkipped(player));
+    }
+
+    private void fireLabelIsSelected(Player player) {
+        _playerListenerList.forEach( listener -> listener.labelIsSelected(player));
+    }
+
+    private void fireCellIsSelected(Player player) {
+        _playerListenerList.forEach( listener -> listener.cellIsSelected(player));
+    }
+
+    private void fireSequenceCellIsDefined(Player player) {
+        _playerListenerList.forEach( listener -> listener.sequenceCellIsDefined(player));
+    }
+
+    private void fireAddedCellInSequence(Player player) {
+        _playerListenerList.forEach( listener -> listener.addedCellInSequence(player));
+    }
 }
