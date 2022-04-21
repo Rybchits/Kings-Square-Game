@@ -84,9 +84,7 @@ public class GameModel {
         _activePlayer++;
         if(_activePlayer >= _playerList.size())  _activePlayer = 0;
 
-        activePlayer().setSelectedCell(null);
-        activePlayer().setSelectedSymbol(null);
-        activePlayer().setCurrentSequence(null);
+        activePlayer().resetCurrentTurn();
         firePlayerExchanged();
     }
 
@@ -110,7 +108,7 @@ public class GameModel {
 
         @Override
         public void labelIsSelected(Player player) {
-            // Проверка метки в алфавите. Проверка, что символ есть куда ставить
+            // Todo Проверка метки в алфавите. Проверка, что символ есть куда ставить
             if (player.getSelectedCell() != null)
                 _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
 
@@ -135,9 +133,9 @@ public class GameModel {
                     player.setSelectedCell(null);
                     throw new InvalidSelectedCellException();
                 }
-            }
 
-            fireCellIsSelected(player);
+                fireCellIsSelected(player);
+            }
         }
 
         @Override
@@ -149,13 +147,11 @@ public class GameModel {
         public void sequenceCellIsDefined(Player player) {
             // Проверка наличия выбранной ячейки в последовательности
             if (!player.currentSequence().contains(player.getSelectedCell())){
-                player.setCurrentSequence(null);
                 throw new SelectedCellNotInSequenceException();
             }
 
             // Проверка наличия слова последовательности в словаре
             if (!_dictionary.contains(player.currentSequence().getWordFromCells())) {
-                player.setCurrentSequence(null);
                 throw new WordIsNotInDictionaryException();
             }
 

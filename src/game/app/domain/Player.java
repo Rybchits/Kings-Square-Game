@@ -79,11 +79,15 @@ public class Player {
     public void setPrevTurnWasSkipped(boolean value) { _prevTurnWasSkipped = value; }
 
     public void skipCurrentTurn() {
+        resetCurrentTurn();
+        _prevTurnWasSkipped = true;
+        fireTurnIsSkipped();
+    }
+
+    public void resetCurrentTurn() {
         _selectedSymbol = null;
         _selectedCell = null;
         _currentSequence = new LabeledCellSequence();
-        _prevTurnWasSkipped = true;
-        fireTurnIsSkipped();
     }
 
 
