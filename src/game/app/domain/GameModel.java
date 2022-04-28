@@ -1,6 +1,7 @@
 package game.app.domain;
 
 import game.app.domain.exceptions.InvalidSelectedCellException;
+import game.app.domain.exceptions.InvalidSelectedSymbolException;
 import game.app.domain.exceptions.SelectedCellNotInSequenceException;
 import game.app.domain.exceptions.WordIsNotInDictionaryException;
 import game.app.domain.gamefield.Cell;
@@ -108,11 +109,16 @@ public class GameModel {
 
         @Override
         public void labelIsSelected(Player player) {
-            // Todo Проверка метки в алфавите. Проверка, что символ есть куда ставить
-            if (player.getSelectedCell() != null)
-                _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
+            if (player.getSelectedSymbol() != null) {
+                if (player.getSelectedCell() != null && _dictionary.isAvailableSymbol(player.getSelectedSymbol()))
+                    _field.setSymbolTo(player.getSelectedCell().position(), player.getSelectedSymbol());
+                else {
+                    player.setSelectedSymbol(null);
+                    throw new InvalidSelectedSymbolException();
+                }
 
-            fireLabelIsSelected(player);
+                fireLabelIsSelected(player);
+            }
         }
 
         @Override

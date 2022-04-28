@@ -1,6 +1,7 @@
 package game.app.view;
 
 import game.app.domain.Player;
+import game.app.domain.exceptions.CustomGameException;
 import game.app.view.custom_panels.CustomActionButton;
 
 import javax.swing.*;
@@ -37,7 +38,11 @@ public class GameControlPanel extends JPanel {
     }
 
     private void _confirmCurrentSequence() {
-        _owner.currentGame().activePlayer().defineSequenceCells();
+        try {
+            _owner.currentGame().activePlayer().defineSequenceCells();
+        } catch (CustomGameException e) {
+            JOptionPane.showMessageDialog(_owner, e.getMessage(),"Ошибка", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void _resetActionsCurrentPlayer() {

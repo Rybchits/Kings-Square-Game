@@ -2,6 +2,7 @@ package game.app.view;
 
 import game.app.domain.GameModel;
 import game.app.domain.Player;
+import game.app.domain.exceptions.CustomGameException;
 import game.app.domain.listeners.GameModelEvent;
 import game.app.domain.listeners.GameModelListener;
 import game.app.domain.listeners.PlayerActionListener;
@@ -98,7 +99,10 @@ public class GamePanel extends JPanel {
 
         @Override
         public void gameFinished(GameModelEvent event) {
-            // Todo вывести модальное окно об окончании игры
+            ArrayList<String> winners = event.score().getNamePlayersWithMaxScore();
+            String result = (winners.size() == 1)? "Победил: " + winners.get(0) : "Ничья!";
+
+            JOptionPane.showMessageDialog(_owner,result);
             _owner.toStartMenu();
         }
 
@@ -116,8 +120,12 @@ public class GamePanel extends JPanel {
             boolean isTimeSetSymbol = _game.activePlayer().getSelectedCell() != null;
             isTimeSetSymbol &= _game.activePlayer().getSelectedSymbol() == null;
 
-            if (isTimeSetSymbol && Character.isAlphabetic(e.getKeyChar())) {
-                _game.activePlayer().setSelectedSymbol(e.getKeyChar());
+            try {
+                if (isTimeSetSymbol && Character.isAlphabetic(e.getKeyChar())) {
+                    _game.activePlayer().setSelectedSymbol(e.getKeyChar());
+                }
+            } catch (CustomGameException exception) {
+                JOptionPane.showMessageDialog(_owner, exception.getMessage(),"Ошибка", JOptionPane.ERROR_MESSAGE);
             }
         }
 

@@ -1,5 +1,6 @@
 package game.app.view;
 
+import game.app.domain.exceptions.CustomGameException;
 import game.app.domain.gamefield.Cell;
 import game.app.domain.gamefield.GameField;
 import org.jetbrains.annotations.NotNull;
@@ -29,15 +30,19 @@ public class GameFieldPanel extends JPanel {
 
             _cellPanel.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    // Если игрок еще не выбрал ячейку для нового символа
-                    if (_owner.currentGame().activePlayer().getSelectedCell() == null) {
-                        // Выбрать эту ячейку для указания символа
-                        _owner.currentGame().activePlayer().setSelectedCell(cell);
-                    }
-                    // Иначе если игрок выбрал новую ячейку и символ
-                    else if (_owner.currentGame().activePlayer().getSelectedSymbol() != null){
-                        // Указать ячейку в последовательность
-                        _owner.currentGame().activePlayer().addedCellInSequence(cell);
+                    try {
+                        // Если игрок еще не выбрал ячейку для нового символа
+                        if (_owner.currentGame().activePlayer().getSelectedCell() == null) {
+                            // Выбрать эту ячейку для указания символа
+                            _owner.currentGame().activePlayer().setSelectedCell(cell);
+                        }
+                        // Иначе если игрок выбрал новую ячейку и символ
+                        else if (_owner.currentGame().activePlayer().getSelectedSymbol() != null){
+                            // Указать ячейку в последовательность
+                            _owner.currentGame().activePlayer().addedCellInSequence(cell);
+                        }
+                    } catch (CustomGameException exception) {
+                        JOptionPane.showMessageDialog(_owner, exception.getMessage(),"Ошибка", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });

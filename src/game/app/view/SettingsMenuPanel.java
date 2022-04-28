@@ -19,7 +19,7 @@ public class SettingsMenuPanel extends JPanel {
     private final JTextField _secondPlayerNameField = new CustomTextField("Игрок 2");
     private final JComboBox<String> _dictionarySelect;
     private final JComboBox<String> _fieldSizeSelect;
-    private final JComboBox<String> _alphabetSelect = new JComboBox<>(new String[]{"ru", "en"});
+    private final JComboBox<String> _alphabetSelect = new JComboBox<>(new String[]{"ru"});
 
     public SettingsMenuPanel(@NotNull GameFrame owner) {
         _owner = owner;
