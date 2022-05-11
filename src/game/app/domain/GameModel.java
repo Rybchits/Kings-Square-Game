@@ -1,9 +1,11 @@
 package game.app.domain;
 
+import game.app.domain.computer_player.ComputerPlayer;
 import game.app.domain.exceptions.InvalidSelectedCellException;
 import game.app.domain.exceptions.InvalidSelectedSymbolException;
 import game.app.domain.exceptions.SelectedCellNotInSequenceException;
 import game.app.domain.exceptions.WordIsNotInDictionaryException;
+import game.app.domain.factory.ComputerStrategyFactory;
 import game.app.domain.gamefield.Cell;
 import game.app.domain.gamefield.Direction;
 import game.app.domain.gamefield.GameField;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameModel {
 
@@ -28,6 +31,23 @@ public class GameModel {
             player.addPlayerActionListener(observer);
             _playerList.add(player);
         }
+    }
+
+    public GameModel(@NotNull GameField field, @NotNull Dictionary dictionary, String namePlayer, String nameStrategy) {
+        _field = field;
+        _dictionary = dictionary;
+        _scoreCounter = new ScoreCounter(new ArrayList<>(Arrays.asList(namePlayer, ComputerPlayer.COMPUTER_PLAYER_NAME)));
+        _computerStrategyFactory = new ComputerStrategyFactory(field, dictionary);
+
+        PlayerObserver observer = new PlayerObserver();
+
+        Player player = new Player(namePlayer);
+        player.addPlayerActionListener(observer);
+        _playerList.add(player);
+
+        var computerPlayer = new ComputerPlayer(_computerStrategyFactory.createStrategyByName(nameStrategy));
+        computerPlayer.addPlayerActionListener(observer);
+        _playerList.add(computerPlayer);
     }
 
     // Игроки данной сессии
@@ -51,6 +71,10 @@ public class GameModel {
     public ScoreCounter scoreCounter() { return _scoreCounter; }
 
 
+    // Фабрики
+    private ComputerStrategyFactory _computerStrategyFactory;
+
+
     // Запуск игры
     public void start() {
         // Определяем первого игрока
@@ -61,7 +85,7 @@ public class GameModel {
         _field.setWordInCenterRow(startWord);
         _dictionary.removeWord(startWord);
 
-        firePlayerExchanged();
+        exchangePlayer();
     }
 
     // Определение окончания игры
@@ -87,6 +111,8 @@ public class GameModel {
 
         activePlayer().resetCurrentTurn();
         firePlayerExchanged();
+
+        if (activePlayer() instanceof ComputerPlayer) ((ComputerPlayer) activePlayer()).makeTurnByStrategy();
     }
 
     private int getIndexRandomPlayer() { return (int)(Math.random() * _playerList.size()); }

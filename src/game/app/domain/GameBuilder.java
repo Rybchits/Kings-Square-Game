@@ -1,5 +1,7 @@
 package game.app.domain;
 
+import game.app.domain.computer_player.DishonestPlayerStrategy;
+import game.app.domain.exceptions.InvalidComputerPlayerStrategyException;
 import game.app.domain.exceptions.InvalidFieldSideException;
 import game.app.domain.exceptions.InvalidNameDictionaryException;
 import game.app.domain.gamefield.GameField;
@@ -94,6 +96,18 @@ public class GameBuilder {
     public int getNumberPlayers() { return _playerNames.size(); }
 
 
+    // Сложность компьютерного игрока
+    public final ArrayList<String> availableDifficulties = new ArrayList<>(Arrays.asList("Пассивный", "Нечестный"));
+
+    private int _selectedDifficult = 0;
+
+    public void setDifficult(String difficult) {
+        if (!availableDifficulties.contains(difficult)){
+            throw new InvalidComputerPlayerStrategyException();
+        }
+        _selectedDifficult = availableDifficulties.indexOf(difficult);
+    }
+
     // Словари
     private final HashMap<String, String> _availableDictionaries = new HashMap<>();
     private String nameSelectedDictionary;
@@ -133,5 +147,9 @@ public class GameBuilder {
 
     public GameModel buildGameModel(@NotNull GameField field, @NotNull Dictionary dict) {
         return new GameModel(field, dict, _playerNames);
+    }
+
+    public GameModel buildGameModelWithBot(@NotNull GameField field, @NotNull Dictionary dict) {
+        return new GameModel(field, dict, _playerNames.get(0), availableDifficulties.get(_selectedDifficult));
     }
 }
