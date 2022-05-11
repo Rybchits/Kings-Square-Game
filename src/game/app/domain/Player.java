@@ -4,6 +4,7 @@ import game.app.domain.exceptions.UnableAddCellInSequenceException;
 import game.app.domain.gamefield.Cell;
 import game.app.domain.gamefield.LabeledCellSequence;
 import game.app.domain.listeners.PlayerActionListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Player {
-    public Player(String name) { _name = name; }
+    public Player(@NotNull String name) { _name = name; }
 
     private final String _name;
 
