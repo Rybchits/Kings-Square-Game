@@ -38,6 +38,8 @@ public class Dictionary {
         return _availableWords.contains(word);
     }
 
+    public String getAlphabet() { return _alphabet; }
+
     public String getRandomWordByLength(int length) {
         List<String> filterSet = _availableWords.stream().filter(word -> word.length() == length).toList();
         return filterSet.size() != 0? filterSet.get((int)(Math.random() * filterSet.size())) : null;
