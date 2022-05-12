@@ -11,14 +11,11 @@ import java.util.ArrayList;
 public abstract class ComputerPlayerStrategy {
     protected final GameField _field;
     protected final Dictionary _dict;
-    protected String name;
 
     public ComputerPlayerStrategy(@NotNull GameField field, @NotNull Dictionary dictionary) {
         _field = field;
         _dict = dictionary;
     }
-
-    public String getName() { return name; }
 
     abstract ComputerPlayerTurn makeTurn();
 

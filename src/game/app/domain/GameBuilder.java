@@ -97,7 +97,8 @@ public class GameBuilder {
 
 
     // Сложность компьютерного игрока
-    public final ArrayList<String> availableDifficulties = new ArrayList<>(Arrays.asList("Пассивный", "Нечестный"));
+    public final ArrayList<String> availableDifficulties = new ArrayList<>(Arrays.asList("Пассивный", "Глупый",
+            "Нечестный"));
 
     private int _selectedDifficult = 0;
 

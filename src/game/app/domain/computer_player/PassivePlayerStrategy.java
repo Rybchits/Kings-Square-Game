@@ -9,7 +9,6 @@ public class PassivePlayerStrategy extends ComputerPlayerStrategy{
 
     public PassivePlayerStrategy(@NotNull GameField field, @NotNull Dictionary dictionary) {
         super(field, dictionary);
-        name = "Пассивный";
     }
 
     @Override

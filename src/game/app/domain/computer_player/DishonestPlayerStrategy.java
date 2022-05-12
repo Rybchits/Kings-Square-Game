@@ -12,7 +12,6 @@ public class DishonestPlayerStrategy extends ComputerPlayerStrategy{
 
     public DishonestPlayerStrategy(@NotNull GameField field, @NotNull Dictionary dictionary) {
         super(field, dictionary);
-        name = "Нечестный";
     }
 
     @Override
@@ -34,7 +33,7 @@ public class DishonestPlayerStrategy extends ComputerPlayerStrategy{
 
         var resultSequence = new ArrayList<Cell>();
         resultSequence.add(cell);
-        resultSequence = createLabeledSequence((ArrayList<Cell>)resultSequence.clone());
+        resultSequence = findNewCellSequence((ArrayList<Cell>)resultSequence.clone());
 
         // Если последовательность была найдена
         if (resultSequence != null) {
@@ -65,7 +64,7 @@ public class DishonestPlayerStrategy extends ComputerPlayerStrategy{
     }
 
 
-    private ArrayList<Cell> createLabeledSequence(ArrayList<Cell> prevSequence) {
+    private ArrayList<Cell> findNewCellSequence(ArrayList<Cell> prevSequence) {
 
         var direction = Direction.north();
         ArrayList<Cell> newSequence;
@@ -83,7 +82,7 @@ public class DishonestPlayerStrategy extends ComputerPlayerStrategy{
                 // Если соседняя ячейка имеет символ и она еще не в последовательности
                 if (neighbor.label() != null && !prevSequence.contains(neighbor)) {
                     newSequence.add(neighbor);
-                    newSequence = createLabeledSequence(newSequence);
+                    newSequence = findNewCellSequence(newSequence);
                 }
 
                 // Если последовательность требуемой длины (4)
