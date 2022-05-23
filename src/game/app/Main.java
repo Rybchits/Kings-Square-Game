@@ -1,8 +1,13 @@
 package game.app;
 
+
+import game.app.view.GameFrame;
+
+import javax.swing.*;
+
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+        SwingUtilities.invokeLater(GameFrame::new);
     }
 }

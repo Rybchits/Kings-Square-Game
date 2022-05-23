@@ -1,0 +1,5 @@
+{
+  "availableFieldSize": [5, 7, 9],
+  "defaultFieldSide": 5,
+  "availableDictionaries": {"Тестовый": ".\\src\\resources\\dictionaries\\default.txt"}
+}
