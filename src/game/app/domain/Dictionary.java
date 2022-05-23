@@ -11,7 +11,7 @@ public class Dictionary {
     private final String _nameDictionary;
     private final Set<String> _availableWords;
     private final ArrayList<String> _removedWords = new ArrayList<>();
-    private final String _alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    private String _alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
 
     public Dictionary(@NotNull String name, @NotNull Set<String> availableWords) {
         _nameDictionary = name;
@@ -39,6 +39,8 @@ public class Dictionary {
     }
 
     public String getAlphabet() { return _alphabet; }
+
+    public void setAlphabet(String alphabet) { _alphabet = alphabet; }
 
     public String getRandomWordByLength(int length) {
         List<String> filterSet = _availableWords.stream().filter(word -> word.length() == length).toList();

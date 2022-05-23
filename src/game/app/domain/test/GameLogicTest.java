@@ -20,8 +20,9 @@ public class GameLogicTest {
     @Test
     void startModel() {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
-        Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "white"));;
+        Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "white"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var logicModel = new GameModel(new GameField(5, 5), dict, playerNames);
         logicModel.start();
@@ -41,6 +42,7 @@ public class GameLogicTest {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
         Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "white"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var field = new GameField(5, 5);
         int i = 0;
@@ -58,6 +60,7 @@ public class GameLogicTest {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
         Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "white"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var logicModel = new GameModel(new GameField(5, 5), dict, playerNames);
         logicModel.start();
@@ -72,6 +75,7 @@ public class GameLogicTest {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
         Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "whita"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var logicModel = new GameModel(new GameField(5, 5), dict, playerNames);
         logicModel.start();
@@ -97,6 +101,7 @@ public class GameLogicTest {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
         Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "whita"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var logicModel = new GameModel(new GameField(5, 5), dict, playerNames);
         logicModel.start();
@@ -122,6 +127,7 @@ public class GameLogicTest {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
         Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "whita"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var logicModel = new GameModel(new GameField(5, 5), dict, playerNames);
         logicModel.start();
@@ -140,6 +146,7 @@ public class GameLogicTest {
         var playerNames = new ArrayList<>(Arrays.asList("Player 1", "2 Игрок"));
         Set<String> words = new HashSet<>(Arrays.asList("cat", "dog", "luck", "tan", "whita"));
         var dict = new Dictionary("Test", words);
+        dict.setAlphabet("abcdefghijklmnopqrstuvwxyz");
 
         var logicModel = new GameModel(new GameField(5, 5), dict, playerNames);
         logicModel.start();
