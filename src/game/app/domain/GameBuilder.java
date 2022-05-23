@@ -1,9 +1,11 @@
 package game.app.domain;
 
-import game.app.domain.computer_player.DishonestPlayerStrategy;
+import game.app.domain.computer_player.ComputerPlayer;
+import game.app.domain.computer_player.SillyPlayerStrategy;
 import game.app.domain.exceptions.InvalidComputerPlayerStrategyException;
 import game.app.domain.exceptions.InvalidFieldSideException;
 import game.app.domain.exceptions.InvalidNameDictionaryException;
+import game.app.domain.factory.ComputerPlayerFactory;
 import game.app.domain.gamefield.GameField;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
@@ -15,6 +17,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 
 public class GameBuilder {
@@ -97,16 +101,19 @@ public class GameBuilder {
 
 
     // Сложность компьютерного игрока
-    public final ArrayList<String> availableDifficulties = new ArrayList<>(Arrays.asList("Пассивный", "Глупый",
-            "Нечестный"));
+    public final Map<String, Function<ComputerPlayerFactory, ComputerPlayer>> availableDifficulties = new HashMap<>() {{
+                put("Пассивный", ComputerPlayerFactory::createPassiveComputerPlayer);
+                put("Глупый", ComputerPlayerFactory::createSillyComputerPlayer);
+                put("Нечестный", ComputerPlayerFactory::createDishonestComputerPlayer);
+            }};
 
-    private int _selectedDifficult = 0;
+    private String _selectedDifficult = "";
 
     public void setDifficult(String difficult) {
-        if (!availableDifficulties.contains(difficult)){
+        if (!availableDifficulties.containsKey(difficult)){
             throw new InvalidComputerPlayerStrategyException();
         }
-        _selectedDifficult = availableDifficulties.indexOf(difficult);
+        _selectedDifficult = difficult;
     }
 
     // Словари

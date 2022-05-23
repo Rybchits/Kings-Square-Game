@@ -5,7 +5,7 @@ import game.app.domain.exceptions.InvalidSelectedCellException;
 import game.app.domain.exceptions.InvalidSelectedSymbolException;
 import game.app.domain.exceptions.SelectedCellNotInSequenceException;
 import game.app.domain.exceptions.WordIsNotInDictionaryException;
-import game.app.domain.factory.ComputerStrategyFactory;
+import game.app.domain.factory.ComputerPlayerFactory;
 import game.app.domain.gamefield.Cell;
 import game.app.domain.gamefield.Direction;
 import game.app.domain.gamefield.GameField;
@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Function;
 
 public class GameModel {
 
@@ -33,11 +34,12 @@ public class GameModel {
         }
     }
 
-    public GameModel(@NotNull GameField field, @NotNull Dictionary dictionary, String namePlayer, String nameStrategy) {
+    public GameModel(@NotNull GameField field, @NotNull Dictionary dictionary, String namePlayer,
+                     Function<ComputerPlayerFactory, ComputerPlayer> createBotFunc) {
         _field = field;
         _dictionary = dictionary;
         _scoreCounter = new ScoreCounter(new ArrayList<>(Arrays.asList(namePlayer, ComputerPlayer.COMPUTER_PLAYER_NAME)));
-        _computerStrategyFactory = new ComputerStrategyFactory(field, dictionary);
+        _computerPlayerFactory = new ComputerPlayerFactory(field, dictionary);
 
         PlayerObserver observer = new PlayerObserver();
 
@@ -45,7 +47,7 @@ public class GameModel {
         player.addPlayerActionListener(observer);
         _playerList.add(player);
 
-        var computerPlayer = new ComputerPlayer(_computerStrategyFactory.createStrategyByName(nameStrategy));
+        ComputerPlayer computerPlayer = createBotFunc.apply(_computerPlayerFactory);
         computerPlayer.addPlayerActionListener(observer);
         _playerList.add(computerPlayer);
     }
@@ -72,7 +74,7 @@ public class GameModel {
 
 
     // Фабрики
-    private ComputerStrategyFactory _computerStrategyFactory;
+    private ComputerPlayerFactory _computerPlayerFactory;
 
 
     // Запуск игры

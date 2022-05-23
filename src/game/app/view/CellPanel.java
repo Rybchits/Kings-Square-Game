@@ -4,6 +4,7 @@ import game.app.domain.gamefield.Cell;
 import game.app.view.utils.AppStyles;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Locale;
 
 public class CellPanel extends JButton {
@@ -11,9 +12,15 @@ public class CellPanel extends JButton {
 
     private final Cell _cell;
 
-    public CellPanel(Cell cell) {
+    public CellPanel(Cell cell, int fieldSize) {
         _cell = cell;
-        setFont(AppStyles.SYMBOL_CELL_FONT);
+        int fontSize;
+        switch (fieldSize) {
+            case 5 -> fontSize = 44;
+            case 7 -> fontSize = 20;
+            default -> fontSize = 8;
+        }
+        setFont(new Font("Century Gothic", Font.PLAIN, fontSize));
         if (_cell.label() != null) setSymbol(_cell.label());
         setSelection(CellSelectionState.NOT_SELECTED);
         setFocusable(false);

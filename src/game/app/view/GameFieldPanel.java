@@ -26,7 +26,7 @@ public class GameFieldPanel extends JPanel {
         setLayout(new GridLayout(field.height(), field.width(), 3, 3));
 
         for (Cell cell : field) {
-            var _cellPanel = new CellPanel(cell);
+            var _cellPanel = new CellPanel(cell, field.height());
 
             _cellPanel.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {

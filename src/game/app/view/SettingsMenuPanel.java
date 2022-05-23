@@ -41,7 +41,7 @@ public class SettingsMenuPanel extends JPanel {
         _fieldSizeSelect = new JComboBox<>(fieldSizes);
 
         // Получить доступные сложности компьютерного игрока
-        String[] availableDifficulties = GameBuilder.getInstance().availableDifficulties.toArray(String[]::new);
+        String[] availableDifficulties = GameBuilder.getInstance().availableDifficulties.keySet().toArray(new String[0]);
 
         _difficultiesSelect = new JComboBox<>(availableDifficulties);
 
@@ -163,8 +163,7 @@ public class SettingsMenuPanel extends JPanel {
         GameBuilder.getInstance().setFieldSide(
                 GameBuilder.getInstance().availableFieldSize.get(_fieldSizeSelect.getSelectedIndex()));
 
-        GameBuilder.getInstance().setDifficult(
-                GameBuilder.getInstance().availableDifficulties.get(_difficultiesSelect.getSelectedIndex()));
+        GameBuilder.getInstance().setDifficult(_difficultiesSelect.getSelectedItem().toString());
 
         var dict = GameBuilder.getInstance().buildDictionary();
         var field = GameBuilder.getInstance().buildGameField();

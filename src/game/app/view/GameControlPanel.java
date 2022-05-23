@@ -34,6 +34,12 @@ public class GameControlPanel extends JPanel {
     }
 
     private void _skipTurnCurrentPlayer() {
+        Player active = _owner.currentGame().activePlayer();
+
+        if (active.getSelectedCell() != null && active.getSelectedCell().label() != null) {
+            _owner.currentGame().field().setSymbolTo(active.getSelectedCell().position(), null);
+        }
+
         _owner.currentGame().activePlayer().skipCurrentTurn();
     }
 

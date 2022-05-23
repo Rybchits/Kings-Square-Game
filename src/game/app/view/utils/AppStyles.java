@@ -12,5 +12,4 @@ public class AppStyles {
     public static Color ACTIVE_PLAYER_COLOR = Color.decode("#0B14DC");
     public static Font TITLE_FONT = new Font("Century Gothic", Font.PLAIN, 28);
     public static Font LABEL_FONT = new Font("Century Gothic", Font.PLAIN, 16);
-    public static Font SYMBOL_CELL_FONT = new Font("Century Gothic", Font.PLAIN, 48);
 }
